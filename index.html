@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Los Tacua 🌮 Menú</title>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Bebas+Neue&family=Karla:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --rojo: #C0392B;
+      --rojo-oscuro: #922B21;
+      --oro: #D4AC0D;
+      --crema: #FDF6E3;
+      --cafe: #4A2C17;
+      --cafe-claro: #7D4E24;
+      --texto: #2C1810;
+      --sombra: rgba(74,44,23,0.18);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Karla', sans-serif;
+      background-color: var(--crema);
+      color: var(--texto);
+      overflow-x: hidden;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      position: relative;
+      background: var(--cafe);
+      color: var(--crema);
+      text-align: center;
+      padding: 60px 20px 50px;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(45deg, transparent, transparent 18px, rgba(255,255,255,0.03) 18px, rgba(255,255,255,0.03) 36px);
+    }
+    .header-badge {
+      display: inline-block;
+      background: var(--rojo);
+      color: #fff;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      padding: 5px 18px;
+      border-radius: 2px;
+      margin-bottom: 18px;
+      animation: fadeDown 0.6s ease both;
+    }
+    .header h1 {
+      font-family: 'Bebas Neue', cursive;
+      font-size: clamp(3.5rem, 10vw, 7rem);
+      letter-spacing: 0.05em;
+      color: var(--crema);
+      line-height: 1;
+      animation: fadeDown 0.7s 0.1s ease both;
+    }
+    .header h1 span { color: var(--oro); }
+    .header p {
+      margin-top: 12px;
+      font-size: 1rem;
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      opacity: 0.8;
+      animation: fadeDown 0.7s 0.2s ease both;
+    }
+    .header-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 28px;
+      animation: fadeDown 0.7s 0.3s ease both;
+    }
+    .header-divider hr {
+      width: 80px; border: none;
+      border-top: 1px solid var(--oro); opacity: 0.6;
+    }
+
+    /* ── TABS ── */
+    .tabs {
+      display: flex;
+      justify-content: center;
+      background: var(--rojo-oscuro);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 3px 12px var(--sombra);
+    }
+    .tab-btn {
+      font-family: 'Karla', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      background: none;
+      border: none;
+      padding: 16px 32px;
+      cursor: pointer;
+      transition: all 0.25s;
+      position: relative;
+    }
+    .tab-btn::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 50%; right: 50%;
+      height: 3px;
+      background: var(--oro);
+      transition: all 0.25s;
+    }
+    .tab-btn.active, .tab-btn:hover { color: #fff; }
+    .tab-btn.active::after { left: 0; right: 0; }
+
+    /* ── CONTAINER ── */
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 48px 20px 60px;
+    }
+    .section { display: none; animation: fadeUp 0.45s ease both; }
+    .section.active { display: block; }
+    .section-title {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 2.2rem;
+      letter-spacing: 0.08em;
+      color: var(--rojo);
+      border-left: 5px solid var(--oro);
+      padding-left: 16px;
+      margin-bottom: 32px;
+    }
+
+    /* ── GRID ── */
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 28px;
+    }
+
+    /* ── CARD ── */
+    .menu-item {
+      background: #fff;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 2px 16px var(--sombra);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.28s, box-shadow 0.28s;
+      position: relative;
+    }
+    .menu-item:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 30px rgba(74,44,23,0.22);
+    }
+
+    /* ── IMAGE WRAP: fixed 200px height ── */
+    .img-wrap {
+      position: relative;
+      width: 100%;
+      height: 200px;
+      overflow: hidden;
+      background: linear-gradient(135deg, var(--cafe-claro) 0%, var(--rojo-oscuro) 100%);
+      flex-shrink: 0;
+    }
+    .img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      transition: transform 0.5s, opacity 0.4s;
+      opacity: 0;
+    }
+    .img-wrap img.loaded { opacity: 1; }
+    .menu-item:hover .img-wrap img { transform: scale(1.06); }
+    .img-emoji {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      transition: opacity 0.3s;
+    }
+    /* hide emoji once real image loads */
+    .img-wrap img.loaded ~ .img-emoji { opacity: 0; }
+
+    .item-badge {
+      position: absolute;
+      top: 12px; right: 12px;
+      background: var(--rojo);
+      color: #fff;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 2px;
+      z-index: 2;
+    }
+
+    /* ── CONTENT ── */
+    .menu-item-content {
+      padding: 18px 20px 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .menu-item-content h3 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.1rem;
+      color: var(--cafe);
+      margin-bottom: 8px;
+    }
+    .menu-item-content p {
+      font-size: 0.88rem;
+      line-height: 1.6;
+      color: #666;
+      flex: 1;
+    }
+    .item-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 16px;
+      gap: 8px;
+    }
+
+    /* ── PRICE (editable) ── */
+    .price-wrap { display: flex; align-items: baseline; gap: 2px; }
+    .price-currency {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 1.1rem;
+      color: var(--rojo);
+      letter-spacing: 0.04em;
+      user-select: none;
+    }
+    .price {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 1.5rem;
+      color: var(--rojo);
+      letter-spacing: 0.04em;
+      border: none;
+      background: transparent;
+      width: 90px;
+      outline: none;
+      cursor: text;
+      transition: background 0.2s, padding 0.2s;
+      border-radius: 2px;
+    }
+    .price:focus {
+      background: rgba(192,57,43,0.08);
+      padding: 2px 6px;
+    }
+    /* subtle hint on hover */
+    .price:hover:not(:focus) { background: rgba(0,0,0,0.04); border-radius: 2px; }
+
+    .edit-hint {
+      font-size: 0.65rem;
+      color: #bbb;
+      letter-spacing: 0.05em;
+      margin-top: 2px;
+    }
+
+    .add-btn {
+      background: var(--cafe);
+      color: var(--crema);
+      border: none;
+      padding: 8px 16px;
+      font-family: 'Karla', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      white-space: nowrap;
+    }
+    .add-btn:hover { background: var(--rojo); transform: scale(1.04); }
+    .add-btn:active { transform: scale(0.97); }
+
+    /* ── CART FLOAT ── */
+    .cart-float {
+      position: fixed;
+      bottom: 28px; right: 28px;
+      background: var(--rojo);
+      color: #fff;
+      border: none;
+      width: 58px; height: 58px;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      cursor: pointer;
+      box-shadow: 0 4px 18px rgba(192,57,43,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      transition: transform 0.2s;
+    }
+    .cart-float:hover { transform: scale(1.1); }
+    .cart-count {
+      position: absolute;
+      top: -4px; right: -4px;
+      background: var(--oro);
+      color: var(--cafe);
+      font-family: 'Karla', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      align-items: center;
+      justify-content: center;
+      display: none;
+    }
+
+    /* ── CART PANEL ── */
+    .cart-overlay {
+      position: fixed; inset: 0;
+      background: rgba(30,10,5,0.55);
+      z-index: 300;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .cart-overlay.open { opacity: 1; pointer-events: all; }
+    .cart-panel {
+      position: fixed;
+      right: 0; top: 0; bottom: 0;
+      width: min(400px, 95vw);
+      background: var(--crema);
+      z-index: 400;
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+      display: flex;
+      flex-direction: column;
+      box-shadow: -6px 0 30px rgba(0,0,0,0.2);
+    }
+    .cart-panel.open { transform: translateX(0); }
+    .cart-header {
+      background: var(--cafe);
+      color: var(--crema);
+      padding: 22px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .cart-header h2 {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 1.6rem;
+      letter-spacing: 0.06em;
+    }
+    .cart-close {
+      background: none; border: none;
+      color: var(--crema); font-size: 1.4rem;
+      cursor: pointer; opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+    .cart-close:hover { opacity: 1; }
+    .cart-items { flex: 1; overflow-y: auto; padding: 20px 24px; }
+    .cart-empty {
+      text-align: center;
+      padding: 40px 0;
+      color: #aaa;
+      font-size: 0.95rem;
+    }
+    .cart-empty span { font-size: 2.5rem; display: block; margin-bottom: 10px; }
+    .cart-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(74,44,23,0.1);
+      animation: fadeUp 0.3s ease;
+    }
+    .cart-row-info { flex: 1; }
+    .cart-row-info strong {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 0.9rem; display: block;
+    }
+    .cart-row-info span {
+      font-size: 0.8rem;
+      color: var(--rojo);
+      font-family: 'Bebas Neue', cursive;
+      letter-spacing: 0.04em;
+    }
+    .qty-ctrl { display: flex; align-items: center; gap: 8px; }
+    .qty-btn {
+      background: var(--cafe); color: var(--crema);
+      border: none; width: 26px; height: 26px;
+      border-radius: 50%; cursor: pointer;
+      font-size: 1rem; display: flex;
+      align-items: center; justify-content: center;
+      transition: background 0.2s;
+    }
+    .qty-btn:hover { background: var(--rojo); }
+    .qty-num {
+      font-family: 'Karla', sans-serif;
+      font-weight: 700; min-width: 16px;
+      text-align: center;
+    }
+    .cart-footer {
+      padding: 20px 24px;
+      background: #fff;
+      border-top: 2px solid rgba(74,44,23,0.1);
+    }
+    .cart-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 16px;
+    }
+    .cart-total span {
+      font-family: 'Karla', sans-serif;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #888;
+    }
+    .cart-total strong {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 2rem;
+      color: var(--rojo);
+      letter-spacing: 0.04em;
+    }
+    .order-btn {
+      width: 100%;
+      background: var(--rojo);
+      color: #fff;
+      border: none;
+      padding: 16px;
+      font-family: 'Bebas Neue', cursive;
+      font-size: 1.2rem;
+      letter-spacing: 0.12em;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .order-btn:hover { background: var(--rojo-oscuro); transform: scale(1.01); }
+    .order-btn:disabled { background: #ccc; cursor: default; transform: none; }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed;
+      bottom: 100px; right: 28px;
+      background: var(--cafe);
+      color: var(--crema);
+      padding: 10px 18px;
+      border-radius: 4px;
+      font-size: 0.82rem;
+      letter-spacing: 0.05em;
+      z-index: 500;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s;
+      pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--cafe);
+      color: rgba(253,246,227,0.7);
+      text-align: center;
+      padding: 32px 20px;
+      font-size: 0.85rem;
+      letter-spacing: 0.06em;
+    }
+    footer strong { color: var(--oro); }
+    .contact-info {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      font-size: 0.8rem;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      .menu-grid { grid-template-columns: 1fr; }
+      .tab-btn { padding: 14px 18px; font-size: 0.78rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-badge">Auténtica cocina con un toque especial</div>
+  <h1>LOS <span>TACUA</span></h1>
+  <div class="header-divider">
+    <hr><span>🌮</span><hr>
+  </div>
+</header>
+
+<!-- TABS -->
+<nav class="tabs">
+  <button class="tab-btn active" onclick="showSection('comidas', this)">🍽️ Comidas</button>
+  <button class="tab-btn" onclick="showSection('bebidas', this)">🥤 Bebidas</button>
+</nav>
+
+<main class="container">
+
+  <!-- COMIDAS -->
+  <section id="comidas" class="section active">
+    <h2 class="section-title">Comidas</h2>
+    <div class="menu-grid" id="grid-comidas"></div>
+  </section>
+
+  <!-- BEBIDAS -->
+  <section id="bebidas" class="section">
+    <h2 class="section-title">Bebidas</h2>
+    <div class="menu-grid" id="grid-bebidas"></div>
+  </section>
+
+</main>
+
+<footer>
+  <p>© 2026 <strong>Los Tacua</strong> — Todos los derechos reservados</p>
+  <div class="contact-info">
+    <span>📍 Visítanos en nuestra ubicación principal</span>
+    <span>📞 Ordena para llevar o a domicilio</span>
+  </div>
+</footer>
+
+<!-- CART FLOAT 
+<button class="cart-float" onclick="toggleCart()" title="Ver orden">
+  🛒
+  <span class="cart-count" id="cart-count">0</span>
+</button>-->
+
+<!-- CART OVERLAY + PANEL -->
+<div class="cart-overlay" id="cart-overlay" onclick="toggleCart()"></div>
+<div class="cart-panel" id="cart-panel">
+  <div class="cart-header">
+    <h2>🛒 Tu Orden</h2>
+    <button class="cart-close" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cart-items">
+    <div class="cart-empty"><span>🌮</span>Tu orden está vacía</div>
+  </div>
+  <div class="cart-footer">
+    <div class="cart-total">
+      <span>Total</span>
+      <strong id="cart-total">Q. 0.00</strong>
+    </div>
+    <button class="order-btn" id="order-btn" disabled onclick="placeOrder()">
+      Confirmar Orden
+    </button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+  /* ── DATA (prices in Quetzales) ── */
+  const comidas = [
+    { id:'tc', name:'Tacos de Birria',  price:20,  emoji:'🌮',
+      desc:'Tres tortillas de maíz con tierna carne de res guisada, acompañados de cilantro, cebolla y consommé para sumergir.', img:'tacos-birria.jpg' },
+    { id:'br', name:'Birria Ramen',     price:30,  emoji:'🍜', badge:'Especial',
+      desc:'Fusión mexicano-japonesa con caldo rojo intenso, carne deshebrada, fideos y huevo cocido con yema cremosa.', img:'birria-ramen.jpg' },
+    { id:'tp', name:'Tacos al Pastor',  price:18,  emoji:'🌯',
+      desc:'Tradicionales tacos con carne de cerdo marinada al estilo trompo, piña asada, cilantro y cebolla.', img:'tacos-pastor.jpg' },
+    { id:'bu', name:'Burritos',         price:18,  emoji:'🫔',
+      desc:'Dos wraps grandes rellenos de arroz, frijoles, carne a elección, lechuga fresca y pico de gallo.', img:'burritos.jpg' },
+    { id:'gr', name:'Gringas',          price:25,  emoji:'🧀',
+      desc:'Quesadillas de harina rellenas de carne al pastor y queso gratinado derretido, servidas en triángulos.', img:'gringas.jpg' },
+    { id:'pz', name:'Pizza',            price:50,  emoji:'🍕', badge:'Nuevo',
+      desc:'Pizza artesanal con salsa de tomate casera, mozzarella derretida, pepperoni y albahaca fresca.', img:'pizza.jpg' },
+  ];
+
+  const bebidas = [
+    { id:'cf', name:'Café',      price:5,  emoji:'☕',
+      desc:'Café negro aromático recién preparado, intenso y perfecto para acompañar cualquier platillo.', img:'cafe.jpg' },
+    { id:'ca', name:'Capuchino', price:10, emoji:'🫗',
+      desc:'Espresso con leche vaporizada y espuma cremosa, decorado con arte latte.', img:'capuchino.jpg' },
+    { id:'li', name:'Licuados',  price:10, emoji:'🥛',
+      desc:'Smoothies de frutas naturales: fresa, plátano, mango o mixto. Preparados con leche o agua.', img:'licuados.jpg' },
+    { id:'ga', name:'Gaseosas',  price:5,  emoji:'🥤',
+      desc:'Refrescos de cola, lima, naranja y otras variedades bien frías.', img:'gaseosas.jpg' },
+    { id:'sm', name:'Smoothie',  price:15, emoji:'🍓', badge:'Popular',
+      desc:'Bebida espesa de frutos rojos con crema batida y toppings de berries frescos.', img:'smoothie.jpg' },
+  ];
+
+  /* prices are editable live – stored here */
+  const prices = {};
+  [...comidas, ...bebidas].forEach(i => prices[i.id] = i.price);
+
+  /* ── BUILD CARDS ── */
+  function buildGrid(items, gridId) {
+    const grid = document.getElementById(gridId);
+    grid.innerHTML = items.map(item => `
+      <div class="menu-item">
+        <div class="img-wrap">
+          <img
+            src="${item.img}"
+            alt="${item.name}"
+            loading="lazy"
+            onload="this.classList.add('loaded')"
+            onerror="this.style.display='none'"
+          >
+          <div class="img-emoji">${item.emoji}</div>
+        </div>
+        <!-- ${item.badge ? `<div class="item-badge">${item.badge}</div>` : ''} -->
+        <div class="menu-item-content">
+          <h3>${item.name}</h3>
+          <p>${item.desc}</p>
+          <div class="item-footer">
+            <div>
+              <div class="price-wrap">
+                <span class="price-currency">Q.</span>
+                <input
+                  class="price"
+                  id="price-${item.id}"
+                  type="number"
+                  min="0"
+                  step="0.50"
+                  value="${item.price.toFixed(2)}"
+                  title="Toca para editar el precio"
+                  onchange="updatePrice('${item.id}', this.value)"
+                  onfocus="this.select()"
+                >
+              </div>
+              <!-- <div class="edit-hint">✏️ Toca para editar</div> -->
+            </div>
+            <!--<button class="add-btn" onclick="addToCart('${item.id}')">+ Agregar</button>-->
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  buildGrid(comidas, 'grid-comidas');
+  buildGrid(bebidas, 'grid-bebidas');
+
+  /* ── PRICE EDIT ── */
+  function updatePrice(id, val) {
+    const n = parseFloat(val);
+    if (!isNaN(n) && n >= 0) {
+      prices[id] = n;
+      document.getElementById('price-' + id).value = n.toFixed(2);
+      renderCart(); /* update totals if item is in cart */
+      showToast('Precio actualizado ✓');
+    }
+  }
+
+  /* ── TABS ── */
+  function showSection(id, btn) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  /* ── CART ── */
+  const cart = {};
+  const allItems = [...comidas, ...bebidas];
+  function getItem(id) { return allItems.find(i => i.id === id); }
+
+  function addToCart(id) {
+    cart[id] = (cart[id] || 0) + 1;
+    renderCart();
+    showToast('✓ ' + getItem(id).name + ' agregado');
+  }
+
+  function changeQty(id, delta) {
+    cart[id] = (cart[id] || 0) + delta;
+    if (cart[id] <= 0) delete cart[id];
+    renderCart();
+  }
+
+  function renderCart() {
+    const keys = Object.keys(cart);
+    const totalQty = keys.reduce((s,k) => s + cart[k], 0);
+    const countEl = document.getElementById('cart-count');
+    if (totalQty > 0) { countEl.style.display = 'flex'; countEl.textContent = totalQty; }
+    else { countEl.style.display = 'none'; }
+
+    const container = document.getElementById('cart-items');
+    if (keys.length === 0) {
+      container.innerHTML = '<div class="cart-empty"><span>🌮</span>Tu orden está vacía</div>';
+    } else {
+      container.innerHTML = keys.map(id => {
+        const item = getItem(id);
+        const subtotal = prices[id] * cart[id];
+        return `
+          <div class="cart-row">
+            <div class="cart-row-info">
+              <strong>${item.name}</strong>
+              <span>Q. ${subtotal.toFixed(2)}</span>
+            </div>
+            <div class="qty-ctrl">
+              <button class="qty-btn" onclick="changeQty('${id}', -1)">−</button>
+              <span class="qty-num">${cart[id]}</span>
+              <button class="qty-btn" onclick="changeQty('${id}', 1)">+</button>
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    const total = keys.reduce((s,k) => s + prices[k] * cart[k], 0);
+    document.getElementById('cart-total').textContent = 'Q. ' + total.toFixed(2);
+    document.getElementById('order-btn').disabled = keys.length === 0;
+  }
+
+  function toggleCart() {
+    document.getElementById('cart-panel').classList.toggle('open');
+    document.getElementById('cart-overlay').classList.toggle('open');
+  }
+
+  function placeOrder() {
+    const keys = Object.keys(cart);
+    const lines = keys.map(k => '• ' + getItem(k).name + ' x' + cart[k] + '  Q. ' + (prices[k]*cart[k]).toFixed(2)).join('\n');
+    const total = keys.reduce((s,k) => s + prices[k] * cart[k], 0);
+    alert('¡Gracias por tu orden!\n\n' + lines + '\n\nTotal: Q. ' + total.toFixed(2) + '\n\n📞 Te contactaremos pronto.');
+    keys.forEach(k => delete cart[k]);
+    renderCart();
+    toggleCart();
+  }
+
+  /* ── TOAST ── */
+  let toastTimer;
+  function showToast(msg) {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove('show'), 2200);
+  }
+</script>
+</body>
+</html>
