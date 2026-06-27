@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú - Los Tacua</title>
+    <!-- Fuentes festivas y legibles desde Google Fonts -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #1a1a1a;
+            --panel-bg: #262626;
+            --primary-color: #FF5722; /* Naranja festivo */
+            --secondary-color: #4CAF50; /* Verde mexicano */
+            --accent-color: #03A9F4; /* Azul brillante */
+            --text-color: #FFFFFF;
+            --text-muted: #FFEB3B; /* Amarillo para precios */
+            --desc-color: #E0E0E0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Quicksand', sans-serif;
+            padding: 20px;
+            background-image: radial-gradient(rgba(255, 87, 34, 0.1) 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+
+        .menu-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            border: 4px solid var(--primary-color);
+            border-radius: 15px;
+            padding: 30px 20px;
+            background-color: rgba(38, 38, 38, 0.95);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 3px dashed var(--secondary-color);
+            padding-bottom: 20px;
+        }
+
+        h1 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 3.5rem;
+            color: var(--primary-color);
+            text-shadow: 3px 3px 0px var(--text-muted);
+            letter-spacing: 2px;
+        }
+
+        .menu-columns {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        @media (min-width: 768px) {
+            .menu-columns {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .category-section {
+            margin-bottom: 25px;
+        }
+
+        .category-title {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.6rem;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid rgba(255,255,255,0.1);
+            padding-bottom: 5px;
+        }
+
+        /* Cambiar color de título por categoría para hacerlo colorido */
+        .category-section:nth-child(1) .category-title { color: var(--primary-color); }
+        .category-section:nth-child(2) .category-title { color: var(--secondary-color); }
+        .category-section:nth-child(3) .category-title { color: var(--accent-color); }
+        .category-section:nth-child(4) .category-title { color: #E91E63; }
+
+        .menu-item {
+            display: flex;
+            margin-bottom: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            border-radius: 8px;
+            transition: transform 0.2s;
+        }
+
+        .menu-item:hover {
+            transform: scale(1.02);
+        }
+
+        .item-img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-right: 15px;
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 5px;
+        }
+
+        .item-name {
+            font-weight: 700;
+            font-size: 1.15rem;
+            text-transform: uppercase;
+        }
+
+        .item-price {
+            color: var(--text-muted);
+            font-weight: 700;
+            font-size: 1.15rem;
+            white-space: nowrap;
+            margin-left: 10px;
+        }
+
+        .item-description {
+            color: var(--desc-color);
+            font-size: 0.95rem;
+            line-height: 1.3;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.4);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="menu-container">
+    <header>
+        <h1>LOS TACUA</h1>
+    </header>
+
+    <div class="menu-columns">
+        <!-- COLUMNA IZQUIERDA -->
+        <div class="column">
+            <!-- ENTRADAS Y ANTOJITOS -->
+            <section class="category-section">
+                <div class="category-title">🌶️ ENTRADAS Y ANTOJITOS</div>
+                
+                <div class="menu-item">
+                    <!-- Puedes reemplazar las URLs de Unsplash con tus propias fotos -->
+                    <img src="gringas.jpg" alt="Gringas" class="item-img">
+                    <div class="item-details">
+                        <div class="item-header">
+                            <span class="item-name">Gringas</span>
+                            <span class="item-price">20.00 / 25.00</span>
+                        </div>
+                        <p class="item-description">Quesadillas de harina rellenas de carne al pastor y queso gratinado derretido, servidas en triángulos.</p>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <img src="https://unsplash.com" alt="Alitas BBQ" class="item-img">
+                    <div class="item-details">
+                        <div class="item-header">
+                            <span class="item-name">Alitas BBQ</span>
+                            <span class="item-price">P.S.P.</span>
+                        </div>
+                        <p class="item-description">Crujientes y bañadas en salsa BBQ, acompañadas de papas fritas. (Precio según porción).</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ESPECIALIDADES MEXICANAS -->
+            <section class="category-section">
+                <div class="category-title">🌮 ESPECIALIDADES MEXICANAS</div>
+                
+                <div class="menu-item">
+                    <img src="https://unsplash.com" alt="Tacos al Pastor" class="item-img">
+                    <div class="item-details">
+                        <div class="item-header">
+                            <span class="item-name">Tacos al Pastor</span>
+                            <span class="item-price">18.00</span>
+                        </div>
+                        <p class="item-description">Tradicionales tacos con carne de cerdo marinada al estilo trompo, rábano, cilantro y cebolla.</p>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <img src="https://unsplash.com" alt="Tacos de Birria" class="item-img">
+                    <div class="item-details">
+                        <div class="item-header">
+                            <span class="item-name">Tacos de Birria</span>
+                            <span class="item-price">20.00</span>
+                        </div>
+                        <p class="item-description">Tres tortillas de maíz con tierna carne de res guisada, acompañados de cilantro, cebolla y consomé para sumergir.</p>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <img src="https://unsplash.com" alt="Burritos" class="item-img">
+                    <div class="item-details">
+                        <div class="item-header">
+                            <span class="item-name">Burritos</span>
+                            <span class="item-price">18.00</span>
+                        </div>
+                        <p class="item-description">Wraps grandes rellenos de arroz, pollo, lechuga fresca y guarniciones.</p>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <img src="https://unsplash.com" alt="Burrito Mixto" class="item-img">
+                    <div class="item-details">
+                        <div class="item-header">
+                            <span class="item-name">Burrito Mixto</span>
+                            <span class="item-price">25.00</span>
+                        </div>
+                        <p class="item-description">Wraps rellenos de carne, pollo, lechuga y guarniciones.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- COLUMNA DERECHA -->
+        <div class="column">
+            <!-- FUSIÓN E INTERNACIONAL -->
+            <section class="category-section">
+                <div class="category-title">🍜 FUSIÓN E INTERNACIONAL</div>
+                
+                <div class="menu-item">
+                    <img src="https://unsplash.com" alt="Birria Ramen" class="item-img">
+                    <div class="item-details">
+                        <div class="item-header">
+                            <span class="item-name">Birria Ramen</span>
+                            <span class="item-price">30.00</span>
+                        </div>
+                        <p class="item-description">Fusión mexicano-japonesa con caldo rojo picante o semi-picante, carne deshebrada, fideos, cilantro y cebolla.</p>
+                    </div>
+                </div>
+
